@@ -1,0 +1,14 @@
+#Remove SYSLOG-server service
+---
+- name: "Stop {{ syslog_service_name }}"
+  service:
+    name: "{{ syslog_service_name }}"
+    enabled: no
+    state: stopped
+  ignore_errors: yes
+
+- name: "Remove /etc/systemd/system/{{ syslog_service_name }}.service"
+  file:
+    path: "/etc/systemd/system/{{ syslog_service_name }}.service"
+    state: absent
+  notify: "{{ syslog_service_name }} restart uninstall"

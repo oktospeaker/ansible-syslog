@@ -1,0 +1,20 @@
+[Unit]
+Description=SYSLOG-server docker container
+Requires=docker.service
+After=docker.service
+
+[Service]
+Restart=always
+ExecStartPre=-/usr/bin/docker rm {{ syslog_service_name }}
+ExecStart=/usr/bin/docker run \
+        --rm \
+        -p {{ syslog_host_port }}:{{ syslog_container_port }}/{{ syslog_port_type }} \
+        -p {{ syslog_web_host_port }}:{{ syslog_web_container_port }}/{{ syslog_web_port_type }} \
+        -e SYSLOG_USERNAME=admin \
+        -e SYSLOG_PASSWORD=1234  \
+        --name {{ syslog_service_name }} \
+        {{ docker_image }}
+ExecStop=/usr/bin/docker stop -t 1 {{ syslog_service_name }}
+
+[Install]
+WantedBy=multi-user.target

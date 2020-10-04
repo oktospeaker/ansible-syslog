@@ -1,0 +1,10 @@
+---
+syslog_service_name: syslog-docker
+uninstall_service: false
+syslog_host_port: 514
+syslog_container_port: 514
+syslog_port_type: udp
+syslog_web_host_port: 8080
+syslog_web_container_port: 80
+syslog_web_port_type: tcp
+docker_image: pbertera/syslogserver
