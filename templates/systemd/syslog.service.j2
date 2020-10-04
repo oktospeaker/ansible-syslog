@@ -10,8 +10,8 @@ ExecStart=/usr/bin/docker run \
         --rm \
         -p {{ syslog_host_port }}:{{ syslog_container_port }}/{{ syslog_port_type }} \
         -p {{ syslog_web_host_port }}:{{ syslog_web_container_port }}/{{ syslog_web_port_type }} \
-        -e SYSLOG_USERNAME=admin \
-        -e SYSLOG_PASSWORD=1234  \
+        -e SYSLOG_USERNAME={{ SYSLOG_USERNAME }} \
+        -e SYSLOG_PASSWORD={{ SYSLOG_PASSWORD }} \
         --name {{ syslog_service_name }} \
         {{ docker_image }}
 ExecStop=/usr/bin/docker stop -t 1 {{ syslog_service_name }}
