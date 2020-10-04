@@ -10,13 +10,17 @@
     name: "{{ syslog_service_name }}"
     state: restarted
     enabled: yes
-  notify: firewall-cmd add-port
+  notify: firewall-cmd add-port 1
 
-- name: firewall-cmd add-port
+- name: firewall-cmd add-port 1
   become: true
   shell: firewall-cmd --zone=public --permanent --add-port={{ syslog_host_port }}/{{ syslog_port_type }}
+  notify: firewall-cmd add-port 2
+
+- name: firewall-cmd add-port 2
+  become: true
   shell: firewall-cmd --zone=public --permanent --add-port={{ syslog_web_host_port }}/{{ syslog_web_port_type }}
-  notify: service firewalld reload
+  notify: service firewalld reload  
 
 - name: "{{ syslog_service_name }} restart uninstall"
   become: true
@@ -26,11 +30,15 @@
 - name: reset-failed
   become: true
   shell: systemctl reset-failed
-  notify: firewall-cmd remove-port
+  notify: firewall-cmd remove-port 1
 
-- name: firewall-cmd remove-port
+- name: firewall-cmd remove-port 1
   become: true
   shell: firewall-cmd --zone=public --permanent --remove-port={{ syslog_host_port }}/{{ syslog_port_type }}
+  notify: firewall-cmd remove-port 2
+
+- name: firewall-cmd remove-port 2
+  become: true
   shell: firewall-cmd --zone=public --permanent --remove-port={{ syslog_web_host_port }}/{{ syslog_web_port_type }}
   notify: service firewalld reload
 
