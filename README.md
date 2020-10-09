@@ -2,8 +2,8 @@
 Deploy docker container with SYSLOG-server based on pbertera/syslogserver (https://hub.docker.com/)
 
 ## Role variables
-    Variable                    |       Default value           |      Description
---------------------------------|-------------------------------|---------------------------------------    
+| Variable | Default value | Description |
+| :---:        |     :---:      |         :---: |  
 syslog_service_name             |       syslog-docker           |   Service name in OS
 uninstall_service               |       false                   |
 syslog_host_port                |       514                     |   Host network port for service
@@ -15,7 +15,7 @@ syslog_web_port_type            |       tcp                     |   Type of port
 docker_image                    |       pbertera/syslogserver   |   Docker image (https://hub.docker.com/)
 SYSLOG_USERNAME                 |       none                    |   See below
 SYSLOG_PASSWORD                 |       none                    |   See below
----------------------------------------------------------------------------------------------------------
+
 
 ### How to use
     - installation: just start the role
