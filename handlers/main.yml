@@ -10,38 +10,38 @@
     name: "{{ syslog_service_name }}"
     state: restarted
     enabled: yes
-  notify: firewall-cmd add-port 1
+  notify: "{{ syslog_service_name }}: firewall-cmd add-port 1"
 
-- name: firewall-cmd add-port 1
+- name: "{{ syslog_service_name }}: firewall-cmd add-port 1"
   become: true
   shell: firewall-cmd --zone=public --permanent --add-port={{ syslog_host_port }}/{{ syslog_port_type }}
-  notify: firewall-cmd add-port 2
+  notify: "{{ syslog_service_name }}: firewall-cmd add-port 2"
 
-- name: firewall-cmd add-port 2
+- name: "{{ syslog_service_name }}: firewall-cmd add-port 2"
   become: true
   shell: firewall-cmd --zone=public --permanent --add-port={{ syslog_web_host_port }}/{{ syslog_web_port_type }}
-  notify: service firewalld reload  
+  notify: "{{ syslog_service_name }}: service firewalld reload"
 
 - name: "{{ syslog_service_name }} restart uninstall"
   become: true
   shell: systemctl daemon-reload
-  notify: reset-failed
+  notify: "{{ syslog_service_name }}: reset-failed"
 
-- name: reset-failed
+- name: "{{ syslog_service_name }}: reset-failed"
   become: true
   shell: systemctl reset-failed
-  notify: firewall-cmd remove-port 1
+  notify: "{{ syslog_service_name }}: firewall-cmd remove-port 1"
 
-- name: firewall-cmd remove-port 1
+- name: "{{ syslog_service_name }}: firewall-cmd remove-port 1"
   become: true
   shell: firewall-cmd --zone=public --permanent --remove-port={{ syslog_host_port }}/{{ syslog_port_type }}
-  notify: firewall-cmd remove-port 2
+  notify: "{{ syslog_service_name }}: firewall-cmd remove-port 2"
 
-- name: firewall-cmd remove-port 2
+- name: "{{ syslog_service_name }}: firewall-cmd remove-port 2"
   become: true
   shell: firewall-cmd --zone=public --permanent --remove-port={{ syslog_web_host_port }}/{{ syslog_web_port_type }}
-  notify: service firewalld reload
+  notify: "{{ syslog_service_name }}: service firewalld reload"
 
-- name: service firewalld reload
+- name: "{{ syslog_service_name }}: service firewalld reload"
   become: true
   shell: systemctl restart firewalld
